@@ -9,7 +9,7 @@
 import UIKit
 import Firebase
 
-class ViewController: UIViewController, UITableViewDelegate {
+class ViewController: UIViewController, UITableViewDelegate, UITextFieldDelegate {
 
     @IBOutlet var postTableView: UITableView!
     @IBOutlet var messageTextField: UITextField!
@@ -18,14 +18,19 @@ class ViewController: UIViewController, UITableViewDelegate {
     var posts = [String]()
 //    var nsPosts = NSArray()
     
+    @IBOutlet var toolbarBottomConstraint: NSLayoutConstraint!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         postButton.layer.cornerRadius = 5
+        
+        self.messageTextField.delegate = self
     }
     
     override func viewDidAppear(animated: Bool) {
+        enableKeyboardHideOnTap()
+        
         let ref = Firebase(url: "https://messagetestapp.firebaseio.com/posts")
         ref.observeEventType(.Value, withBlock: { snapshot in
             
@@ -88,8 +93,46 @@ class ViewController: UIViewController, UITableViewDelegate {
         postTableView.scrollToRowAtIndexPath(NSIndexPath(forRow: lastRow, inSection: 0), atScrollPosition: UITableViewScrollPosition.Bottom, animated: true)
     }
     
+    func enableKeyboardHideOnTap() {
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWillShow:"), name: UIKeyboardWillShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWillHide:"), name: UIKeyboardWillHideNotification, object: nil)
+        
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "hideKeyboard")
+        self.view.addGestureRecognizer(tap)
+        
+    }
     
-
-
+    func hideKeyboard() {
+        self.view.endEditing(true)
+    }
+    
+    func keyboardWillShow(notification: NSNotification) {
+        let info = notification.userInfo!
+        
+        let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
+        
+        let duration = notification.userInfo![UIKeyboardAnimationDurationUserInfoKey] as! Double
+        
+        UIView.animateWithDuration(duration) { () -> Void in
+            self.toolbarBottomConstraint.constant = keyboardFrame.size.height + 5
+            
+            self.view.layoutIfNeeded()
+        }
+    }
+    
+    func keyboardWillHide(notification: NSNotification) {
+        let duration = notification.userInfo![UIKeyboardAnimationDurationUserInfoKey] as! Double
+        
+        UIView.animateWithDuration(duration) { () -> Void in
+            self.toolbarBottomConstraint.constant = 0
+            self.view.layoutIfNeeded()
+        }
+    }
+    
+    func textFieldDidBeginEditing(textField: UITextField) {
+        scrollToBottom()
+    }
+    
 }
 
