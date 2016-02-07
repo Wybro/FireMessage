@@ -10,13 +10,15 @@ import UIKit
 import Firebase
 
 class ViewController: UIViewController, UITableViewDelegate, UITextFieldDelegate {
+    
+    let ref = Firebase(url: "https://messagetestapp.firebaseio.com/")
 
     @IBOutlet var postTableView: UITableView!
     @IBOutlet var messageTextField: UITextField!
     @IBOutlet var postButton: UIButton!
     
-    var posts = [String]()
-//    var nsPosts = NSArray()
+//    var posts = [String]()
+    var posts = [NSDictionary]()
     
     @IBOutlet var toolbarBottomConstraint: NSLayoutConstraint!
     
@@ -31,24 +33,14 @@ class ViewController: UIViewController, UITableViewDelegate, UITextFieldDelegate
     override func viewDidAppear(animated: Bool) {
         enableKeyboardHideOnTap()
         
-        let ref = Firebase(url: "https://messagetestapp.firebaseio.com/posts")
-        ref.observeEventType(.Value, withBlock: { snapshot in
-            
-            var newItems = [String]()
-            
-            for item in snapshot.children {
-                let post = item.value as String
-                newItems.append(post)
-            }
-            
-            self.posts = newItems
-            self.postTableView.reloadData()
-            self.scrollToBottom()
-            
-//            print(snapshot.value)
-            }, withCancelBlock: { error in
-                print(error.description)
-        })
+        observeNewPosts()
+
+        observeUserAuth()
+        
+    }
+    
+    override func viewDidDisappear(animated: Bool) {
+        ref.removeAllObservers()
     }
 
     override func didReceiveMemoryWarning() {
@@ -60,20 +52,46 @@ class ViewController: UIViewController, UITableViewDelegate, UITextFieldDelegate
         postMessage(messageTextField.text!)
     }
     
-    
     func postMessage(text: String) {
-        let ref = Firebase(url: "https://messagetestapp.firebaseio.com")
-        let usersRef = ref.childByAppendingPath("posts")
-        let usersRefChild = usersRef.childByAutoId()
-        
-        // only post if less than/ equal to 50 characters
-        if text.characters.count <= 50 && !text.isEmpty {
-            usersRefChild.setValue(text)
-            messageTextField.text = ""
+        let defaults = NSUserDefaults.standardUserDefaults()
+        if let currentUser = defaults.objectForKey("currentUser") as? [String : AnyObject] {
+            if ref.authData != nil {
+                let usersRef = ref.childByAppendingPath("posts")
+                let usersRefChild = usersRef.childByAutoId()
+                
+                // only post if less than/ equal to 50 characters
+                if text.characters.count <= 50 && !text.isEmpty {
+//                    usersRefChild.setValue(text)
+                    let post = ["username": currentUser["username"]!, "message":text] as [String:AnyObject]
+                    usersRefChild.setValue(post)
+                    //                usersRef.setValue(text)
+                    messageTextField.text = ""
+                }
+                else {
+                    print("Too few/ many characters")
+                }
+                
+            }
         }
-        else {
-            print("Too few/ many characters")
-        }
+//        defaults.setObject(dictionary, forKey: "currentUser")
+    
+//        if ref.authData != nil {
+//            let usersRef = ref.childByAppendingPath("posts")
+//            let usersRefChild = usersRef.childByAutoId()
+//            
+//            // only post if less than/ equal to 50 characters
+//            if text.characters.count <= 50 && !text.isEmpty {
+//                usersRefChild.setValue(text)
+////                let post = ["user": ref.authData["username"]]
+//                
+////                usersRef.setValue(text)
+//                messageTextField.text = ""
+//            }
+//            else {
+//                print("Too few/ many characters")
+//            }
+//            
+//        }
     }
     
     // MARK: UITableViewDelegate
@@ -83,14 +101,19 @@ class ViewController: UIViewController, UITableViewDelegate, UITextFieldDelegate
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
-        cell.textLabel?.text = posts[indexPath.row] as String
+        let post = posts[indexPath.row]
+        
+        cell.textLabel?.text = post["message"] as? String
+        cell.detailTextLabel?.text = post["username"] as? String
         
         return cell
     }
     
     func scrollToBottom() {
         let lastRow = postTableView.numberOfRowsInSection(0) - 1
-        postTableView.scrollToRowAtIndexPath(NSIndexPath(forRow: lastRow, inSection: 0), atScrollPosition: UITableViewScrollPosition.Bottom, animated: true)
+        if lastRow >= 0 {
+            postTableView.scrollToRowAtIndexPath(NSIndexPath(forRow: lastRow, inSection: 0), atScrollPosition: UITableViewScrollPosition.Bottom, animated: true)
+        }
     }
     
     func enableKeyboardHideOnTap() {
@@ -134,5 +157,54 @@ class ViewController: UIViewController, UITableViewDelegate, UITextFieldDelegate
         scrollToBottom()
     }
     
+    func observeNewPosts() {
+        let refPosts = ref.childByAppendingPath("posts")
+        refPosts.observeEventType(.Value, withBlock: { snapshot in
+            
+            var newItems = [NSDictionary]()
+            
+            for item in snapshot.children {
+                let child = item as! FDataSnapshot
+                let dict = child.value as! NSDictionary
+                newItems.append(dict)
+            }
+            
+            self.posts = newItems
+            self.postTableView.reloadData()
+            self.scrollToBottom()
+            
+            }, withCancelBlock: { error in
+                print(error.description)
+        })
+    }
+    
+    func observeUserAuth() {
+        ref.observeAuthEventWithBlock { (authData) -> Void in
+            if authData != nil {
+                // user is athenticated
+                print("Authenticated: \(authData)")
+            }
+            else {
+                // No user is signed in
+                self.performSegueWithIdentifier("userMustLogin", sender: self)
+                print("No user signed in -- logging in anonymously")
+            }
+        }
+    }
+    @IBAction func logout(sender: UIBarButtonItem) {
+        let alert = UIAlertController(title: "Logout", message: "Are you sure you want to logout?", preferredStyle: .Alert)
+        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
+        let confirmAction = UIAlertAction(title: "Confirm", style: .Default, handler: { (_) -> Void in
+            self.ref.unauth()
+        })
+        
+        alert.addAction(cancelAction)
+        alert.addAction(confirmAction)
+        
+        self.presentViewController(alert, animated: true, completion: nil)
+        alert.view.tintColor = UIColor(red: 239/255, green: 45/255, blue: 86/255, alpha: 1)
+        
+    }
+
 }
 
