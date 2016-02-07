@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="FireMessage" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
+                        <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" showsSelectionImmediatelyOnTouchBegin="NO" rowHeight="70" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="YqE-Ml-CSz">
+                                <rect key="frame" x="0.0" y="20" width="600" height="286"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="286" id="GXT-ye-3Cf"/>
+                                </constraints>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Cell" textLabel="8Nr-rh-ech" rowHeight="70" style="IBUITableViewCellStyleDefault" id="ija-CM-hD1">
+                                        <rect key="frame" x="0.0" y="28" width="600" height="70"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ija-CM-hD1" id="LeE-fn-1bj">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="70"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="8Nr-rh-ech">
+                                                    <rect key="frame" x="15" y="0.0" width="570" height="70"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                    <color key="textColor" red="0.93725490199999995" green="0.1764705882" blue="0.33725490200000002" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="BYZ-38-t0r" id="d78-j7-IYV"/>
+                                    <outlet property="delegate" destination="BYZ-38-t0r" id="PC9-jc-hbe"/>
+                                </connections>
+                            </tableView>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="type message..." textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="4fM-Qc-JYk">
+                                <rect key="frame" x="20" y="314" width="560" height="30"/>
+                                <color key="textColor" red="0.93725490199999995" green="0.1764705882" blue="0.33725490200000002" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="G5M-Co-EcC">
+                                <rect key="frame" x="250" y="352" width="100" height="40"/>
+                                <color key="backgroundColor" red="0.93725490196078431" green="0.1764705882352941" blue="0.33725490196078434" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="FoK-rc-eKl"/>
+                                    <constraint firstAttribute="width" constant="100" id="MhQ-Zz-APM"/>
+                                </constraints>
+                                <state key="normal" title="Post">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="post:" destination="BYZ-38-t0r" eventType="touchUpInside" id="hzm-GP-fQU"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailingMargin" secondItem="4fM-Qc-JYk" secondAttribute="trailing" id="1Vt-uR-kyB"/>
+                            <constraint firstItem="G5M-Co-EcC" firstAttribute="top" secondItem="4fM-Qc-JYk" secondAttribute="bottom" constant="8" id="6RM-NS-wag"/>
+                            <constraint firstItem="YqE-Ml-CSz" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="-20" id="C8L-9M-7VF"/>
+                            <constraint firstItem="4fM-Qc-JYk" firstAttribute="top" secondItem="YqE-Ml-CSz" secondAttribute="bottom" constant="8" id="Md8-dV-LbR"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="YqE-Ml-CSz" secondAttribute="trailing" constant="-20" id="RVP-Hl-TZl"/>
+                            <constraint firstItem="YqE-Ml-CSz" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="c9Q-xt-nJd"/>
+                            <constraint firstItem="G5M-Co-EcC" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="cl9-Pt-n4i"/>
+                            <constraint firstAttribute="leadingMargin" secondItem="4fM-Qc-JYk" secondAttribute="leading" id="nwi-GO-Gmk"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="messageTextField" destination="4fM-Qc-JYk" id="8ma-rD-oPe"/>
+                        <outlet property="postButton" destination="G5M-Co-EcC" id="V2o-mQ-khK"/>
+                        <outlet property="postTableView" destination="YqE-Ml-CSz" id="qF7-YP-nHL"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="305" y="429"/>
+        </scene>
+    </scenes>
+</document>
