@@ -6,7 +6,7 @@
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
-        <!--FireMessage-->
+        <!--Flare-->
         <scene sceneID="tne-QT-ifu">
             <objects>
                 <viewController automaticallyAdjustsScrollViewInsets="NO" id="BYZ-38-t0r" customClass="ViewController" customModule="FireMessage" customModuleProvider="target" sceneMemberID="viewController">
@@ -123,7 +123,7 @@
                             <constraint firstItem="xNL-Ab-Ifs" firstAttribute="top" secondItem="YqE-Ml-CSz" secondAttribute="bottom" id="kZ7-HJ-Iz6"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="FireMessage" id="mo9-eW-zaM">
+                    <navigationItem key="navigationItem" title="Flare" id="mo9-eW-zaM">
                         <barButtonItem key="rightBarButtonItem" title="Logout" id="LMk-mt-eXL">
                             <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <connections>
