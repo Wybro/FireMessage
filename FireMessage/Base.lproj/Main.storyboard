@@ -32,14 +32,19 @@
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="62"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="l2j-Mp-PWX">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="l2j-Mp-PWX">
                                                     <rect key="frame" x="13" y="8" width="579" height="25"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="25" id="8qt-LY-hsZ"/>
                                                     </constraints>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="21"/>
                                                     <color key="textColor" red="0.93725490199999995" green="0.1764705882" blue="0.33725490200000002" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
+                                                    <variation key="default">
+                                                        <mask key="constraints">
+                                                            <exclude reference="8qt-LY-hsZ"/>
+                                                        </mask>
+                                                    </variation>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uxG-W7-BiL">
                                                     <rect key="frame" x="59" y="38" width="33" height="15"/>
@@ -55,11 +60,13 @@
                                                 </label>
                                             </subviews>
                                             <constraints>
+                                                <constraint firstAttribute="bottomMargin" secondItem="CcF-LE-BZG" secondAttribute="bottom" id="BYf-QJ-hNg"/>
                                                 <constraint firstItem="CcF-LE-BZG" firstAttribute="top" secondItem="l2j-Mp-PWX" secondAttribute="bottom" constant="4" id="CFP-wX-jsn"/>
                                                 <constraint firstItem="uxG-W7-BiL" firstAttribute="leading" secondItem="CcF-LE-BZG" secondAttribute="trailing" constant="8" id="HHY-Di-DnE"/>
                                                 <constraint firstItem="uxG-W7-BiL" firstAttribute="centerY" secondItem="CcF-LE-BZG" secondAttribute="centerY" id="Jwc-Uy-aBE"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="l2j-Mp-PWX" secondAttribute="trailing" id="K2o-pv-3ps"/>
                                                 <constraint firstAttribute="topMargin" secondItem="l2j-Mp-PWX" secondAttribute="top" id="ae7-WU-Sma"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="uxG-W7-BiL" secondAttribute="bottom" constant="1" id="ecy-2S-XWY"/>
                                                 <constraint firstAttribute="leadingMargin" secondItem="CcF-LE-BZG" secondAttribute="leading" constant="-5" id="ekl-NV-ELc"/>
                                                 <constraint firstAttribute="leadingMargin" secondItem="l2j-Mp-PWX" secondAttribute="leading" constant="-5" id="mur-Rn-o6y"/>
                                             </constraints>

@@ -93,10 +93,15 @@ class ViewController: UIViewController, UITableViewDelegate, UITextFieldDelegate
         cell.userLabel.text = user!
         cell.timestampLabel.text = timestamp!
         
-//        cell.textLabel?.text = message!
-//        cell.detailTextLabel?.text = "\(user!) - \(timestamp!)"
-        
         return cell
+    }
+    
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return UITableViewAutomaticDimension
+    }
+    
+    func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return UITableViewAutomaticDimension
     }
     
     func scrollToBottom() {
@@ -198,7 +203,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITextFieldDelegate
     
     func createTimestamp() -> String {
         let dateFormatter = NSDateFormatter()
-        dateFormatter.dateFormat = "h:mm a"
+        dateFormatter.dateFormat = "EEEE - h:mm a"
         dateFormatter.timeZone = NSTimeZone.localTimeZone()
         let now = NSDate()
         let timeStamp = dateFormatter.stringFromDate(now)
