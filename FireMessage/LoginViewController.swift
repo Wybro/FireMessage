@@ -22,6 +22,10 @@ class LoginViewController: UIViewController {
         // Do any additional setup after loading the view.
         
         configureUIElements()
+//        animateWelcome()
+    }
+    
+    override func viewDidAppear(animated: Bool) {
         animateWelcome()
     }
 
@@ -52,7 +56,7 @@ class LoginViewController: UIViewController {
     }
     
     func animateWelcome() {
-        UIView.animateWithDuration(0.3, delay: 0, options: UIViewAnimationOptions.CurveEaseOut, animations: { () -> Void in
+        UIView.animateWithDuration(0.3, delay: 0.2, options: UIViewAnimationOptions.CurveEaseOut, animations: { () -> Void in
             self.welcomeImageView.transform = CGAffineTransformMakeScale(1, 1)
             self.welcomeImageView.alpha = 1
             }) { (completed) -> Void in
