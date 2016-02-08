@@ -10,8 +10,11 @@ import UIKit
 import Firebase
 
 class ViewController: UIViewController, UITableViewDelegate, UITextFieldDelegate {
-    
+    // Reference to DB
     let ref = Firebase(url: "https://messagetestapp.firebaseio.com/")
+    
+    // Max length of a post
+    let maxMessageLength = 100
 
     @IBOutlet var postTableView: UITableView!
     @IBOutlet var messageTextField: UITextField!
@@ -60,7 +63,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITextFieldDelegate
                 let usersRefChild = usersRef.childByAutoId()
                 
                 // only post if less than/ equal to 50 characters
-                if text.characters.count <= 50 && !text.isEmpty {
+                if text.characters.count <= maxMessageLength && !text.isEmpty {
 
                     let post = ["username": currentUser["username"]!, "message":text, "timestamp": createTimestamp()] as [String:AnyObject]
                     usersRefChild.setValue(post)
@@ -93,10 +96,15 @@ class ViewController: UIViewController, UITableViewDelegate, UITextFieldDelegate
         cell.userLabel.text = user!
         cell.timestampLabel.text = timestamp!
         
-//        cell.textLabel?.text = message!
-//        cell.detailTextLabel?.text = "\(user!) - \(timestamp!)"
-        
         return cell
+    }
+    
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return UITableViewAutomaticDimension
+    }
+    
+    func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return UITableViewAutomaticDimension
     }
     
     func scrollToBottom() {
@@ -198,7 +206,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITextFieldDelegate
     
     func createTimestamp() -> String {
         let dateFormatter = NSDateFormatter()
-        dateFormatter.dateFormat = "h:mm a"
+        dateFormatter.dateFormat = "EEEE - h:mm a"
         dateFormatter.timeZone = NSTimeZone.localTimeZone()
         let now = NSDate()
         let timeStamp = dateFormatter.stringFromDate(now)
