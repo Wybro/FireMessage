@@ -14,6 +14,7 @@
 		2DB0DB171C66F49500D9C246 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2DB0DB151C66F49500D9C246 /* Main.storyboard */; };
 		2DB0DB191C66F49500D9C246 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2DB0DB181C66F49500D9C246 /* Assets.xcassets */; };
 		2DB0DB1C1C66F49500D9C246 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2DB0DB1A1C66F49500D9C246 /* LaunchScreen.storyboard */; };
+		2DBFF1DA1C68313500546928 /* PostTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DBFF1D91C68313500546928 /* PostTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -25,6 +26,7 @@
 		2DB0DB181C66F49500D9C246 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2DB0DB1B1C66F49500D9C246 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		2DB0DB1D1C66F49500D9C246 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2DBFF1D91C68313500546928 /* PostTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostTableViewCell.swift; sourceTree = "<group>"; };
 		5FE48DCBA258D81DEC3DE3B6 /* Pods-FireMessage.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FireMessage.release.xcconfig"; path = "Pods/Target Support Files/Pods-FireMessage/Pods-FireMessage.release.xcconfig"; sourceTree = "<group>"; };
 		732CDDB50FFDA1E95BB431CC /* Pods_FireMessage.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FireMessage.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		939C0F18FC73B3096F7A9EA9 /* Pods-FireMessage.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FireMessage.debug.xcconfig"; path = "Pods/Target Support Files/Pods-FireMessage/Pods-FireMessage.debug.xcconfig"; sourceTree = "<group>"; };
@@ -65,6 +67,7 @@
 			children = (
 				2DB0DB111C66F49500D9C246 /* AppDelegate.swift */,
 				2DB0DB131C66F49500D9C246 /* ViewController.swift */,
+				2DBFF1D91C68313500546928 /* PostTableViewCell.swift */,
 				2D48BB7E1C67F0E4002C7747 /* LoginViewController.swift */,
 				2DB0DB151C66F49500D9C246 /* Main.storyboard */,
 				2DB0DB181C66F49500D9C246 /* Assets.xcassets */,
@@ -216,6 +219,7 @@
 				2D48BB7F1C67F0E4002C7747 /* LoginViewController.swift in Sources */,
 				2DB0DB141C66F49500D9C246 /* ViewController.swift in Sources */,
 				2DB0DB121C66F49500D9C246 /* AppDelegate.swift in Sources */,
+				2DBFF1DA1C68313500546928 /* PostTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

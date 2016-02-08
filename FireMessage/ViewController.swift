@@ -36,7 +36,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITextFieldDelegate
         observeNewPosts()
 
         observeUserAuth()
-        
+        createTimestamp()
     }
     
     override func viewDidDisappear(animated: Bool) {
@@ -61,10 +61,10 @@ class ViewController: UIViewController, UITableViewDelegate, UITextFieldDelegate
                 
                 // only post if less than/ equal to 50 characters
                 if text.characters.count <= 50 && !text.isEmpty {
-//                    usersRefChild.setValue(text)
-                    let post = ["username": currentUser["username"]!, "message":text] as [String:AnyObject]
+
+                    let post = ["username": currentUser["username"]!, "message":text, "timestamp": createTimestamp()] as [String:AnyObject]
                     usersRefChild.setValue(post)
-                    //                usersRef.setValue(text)
+
                     messageTextField.text = ""
                 }
                 else {
@@ -73,25 +73,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITextFieldDelegate
                 
             }
         }
-//        defaults.setObject(dictionary, forKey: "currentUser")
-    
-//        if ref.authData != nil {
-//            let usersRef = ref.childByAppendingPath("posts")
-//            let usersRefChild = usersRef.childByAutoId()
-//            
-//            // only post if less than/ equal to 50 characters
-//            if text.characters.count <= 50 && !text.isEmpty {
-//                usersRefChild.setValue(text)
-////                let post = ["user": ref.authData["username"]]
-//                
-////                usersRef.setValue(text)
-//                messageTextField.text = ""
-//            }
-//            else {
-//                print("Too few/ many characters")
-//            }
-//            
-//        }
     }
     
     // MARK: UITableViewDelegate
@@ -100,11 +81,20 @@ class ViewController: UIViewController, UITableViewDelegate, UITextFieldDelegate
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
-        let post = posts[indexPath.row]
+        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as! PostTableViewCell
         
-        cell.textLabel?.text = post["message"] as? String
-        cell.detailTextLabel?.text = post["username"] as? String
+//        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
+        let post = posts[indexPath.row]
+        let message = post["message"] as? String
+        let user = post["username"] as? String
+        let timestamp = post["timestamp"] as? String
+        
+        cell.postLabel.text = message!
+        cell.userLabel.text = user!
+        cell.timestampLabel.text = timestamp!
+        
+//        cell.textLabel?.text = message!
+//        cell.detailTextLabel?.text = "\(user!) - \(timestamp!)"
         
         return cell
     }
@@ -204,6 +194,16 @@ class ViewController: UIViewController, UITableViewDelegate, UITextFieldDelegate
         self.presentViewController(alert, animated: true, completion: nil)
         alert.view.tintColor = UIColor(red: 239/255, green: 45/255, blue: 86/255, alpha: 1)
         
+    }
+    
+    func createTimestamp() -> String {
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.dateFormat = "h:mm a"
+        dateFormatter.timeZone = NSTimeZone.localTimeZone()
+        let now = NSDate()
+        let timeStamp = dateFormatter.stringFromDate(now)
+        
+        return timeStamp
     }
 
 }
