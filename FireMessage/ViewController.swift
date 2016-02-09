@@ -109,6 +109,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITextFieldDelegate
     
     func scrollToBottom() {
         let lastRow = postTableView.numberOfRowsInSection(0) - 1
+
         if lastRow >= 0 {
             postTableView.scrollToRowAtIndexPath(NSIndexPath(forRow: lastRow, inSection: 0), atScrollPosition: UITableViewScrollPosition.Bottom, animated: true)
         }
@@ -137,7 +138,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITextFieldDelegate
         
         UIView.animateWithDuration(duration) { () -> Void in
             self.toolbarBottomConstraint.constant = keyboardFrame.size.height + 5
-            
+            self.postTableView.contentOffset = CGPointMake(0, self.postTableView.contentOffset.y + keyboardFrame.height)
             self.view.layoutIfNeeded()
         }
     }
@@ -169,7 +170,11 @@ class ViewController: UIViewController, UITableViewDelegate, UITextFieldDelegate
             
             self.posts = newItems
             self.postTableView.reloadData()
-            self.scrollToBottom()
+            
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                self.scrollToBottom()
+            })
+            
             
             }, withCancelBlock: { error in
                 print(error.description)
