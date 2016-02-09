@@ -31,6 +31,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITextFieldDelegate
         postButton.layer.cornerRadius = 5
         
         self.messageTextField.delegate = self
+        
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -39,7 +40,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITextFieldDelegate
         observeNewPosts()
 
         observeUserAuth()
-        createTimestamp()
     }
     
     override func viewDidDisappear(animated: Bool) {
@@ -65,7 +65,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITextFieldDelegate
                 // only post if less than/ equal to 50 characters
                 if text.characters.count <= maxMessageLength && !text.isEmpty {
 
-                    let post = ["username": currentUser["username"]!, "message":text, "timestamp": createTimestamp()] as [String:AnyObject]
+                    let post = ["username": currentUser["username"]!, "message":text, "timestamp": createTimeStamp()] as [String:AnyObject]
                     usersRefChild.setValue(post)
 
                     messageTextField.text = ""
@@ -92,8 +92,10 @@ class ViewController: UIViewController, UITableViewDelegate, UITextFieldDelegate
         let user = post["username"] as? String
         let timestamp = post["timestamp"] as? String
         
+        let formattedTimeStamp = formatTimeStamp(timestamp!)
+        
         cell.postLabel.text = message!
-        cell.userLabel.text = user!
+        cell.userLabel.text = "\(user!) | \(formattedTimeStamp)"
         cell.timestampLabel.text = timestamp!
         
         return cell
@@ -185,15 +187,16 @@ class ViewController: UIViewController, UITableViewDelegate, UITextFieldDelegate
         ref.observeAuthEventWithBlock { (authData) -> Void in
             if authData != nil {
                 // user is athenticated
-                print("Authenticated: \(authData)")
+//                print("Authenticated: \(authData)")
             }
             else {
                 // No user is signed in
                 self.performSegueWithIdentifier("userMustLogin", sender: self)
-                print("No user signed in -- logging in anonymously")
+//                print("No user signed in -- logging in anonymously")
             }
         }
     }
+    
     @IBAction func logout(sender: UIBarButtonItem) {
         let alert = UIAlertController(title: "Logout", message: "Are you sure you want to logout?", preferredStyle: .Alert)
         let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
@@ -209,14 +212,39 @@ class ViewController: UIViewController, UITableViewDelegate, UITextFieldDelegate
         
     }
     
-    func createTimestamp() -> String {
+    func createTimeStamp() -> String {
         let dateFormatter = NSDateFormatter()
-        dateFormatter.dateFormat = "EEEE - h:mm a"
-        dateFormatter.timeZone = NSTimeZone.localTimeZone()
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+        dateFormatter.timeZone = NSTimeZone(name: "UTC")
         let now = NSDate()
         let timeStamp = dateFormatter.stringFromDate(now)
-        
         return timeStamp
+    }
+    
+    func formatTimeStamp(date: String) -> String {
+        let calendar = NSCalendar.currentCalendar()
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+        // Convert string date from DB to NSDate
+        let dateFromString = dateFormatter.dateFromString(date)
+        dateFormatter.timeZone = NSTimeZone.localTimeZone()
+        
+        // Format the timeStamp informally according to the date of the post
+        if calendar.isDateInToday(dateFromString!) {
+            dateFormatter.dateFormat = "h:mm a"
+            let timeStampString = dateFormatter.stringFromDate(dateFromString!)
+            return "Today, \(timeStampString)"
+        }
+        else if calendar.isDateInYesterday(dateFromString!) {
+            dateFormatter.dateFormat = "h:mm a"
+            let timeStampString = dateFormatter.stringFromDate(dateFromString!)
+            return "Yesterday, \(timeStampString)"
+        }
+        else {
+            dateFormatter.dateFormat = "EEEE, h:mm a"
+            let timeStampString = dateFormatter.stringFromDate(dateFromString!)
+            return timeStampString
+        }
     }
 
 }
